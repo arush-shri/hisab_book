@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "261534831735",
+    "project_id": "hisab-book03",
+    "storage_bucket": "hisab-book03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261534831735:android:d73d796875f036c2276272",
+        "android_client_info": {
+          "package_name": "arush.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261534831735-rc9ufjrq5ehn2nhmkqn6ohu6pqs1fhh0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "arush.application",
+            "certificate_hash": "1a8fdd0227e3a51fa01da833c94eaadcf81e5b6b"
+          }
+        },
+        {
+          "client_id": "261534831735-ckfi9tuiferq6t777f97jt9n65nrhq2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwvPO5UxTVk-52p6klYnXnHp11CDshVAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261534831735-ckfi9tuiferq6t777f97jt9n65nrhq2e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
