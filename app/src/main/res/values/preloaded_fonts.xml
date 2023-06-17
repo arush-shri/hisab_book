@@ -2,5 +2,9 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/acme</item>
+        <item>@font/averia_libre_light</item>
+        <item>@font/chivo</item>
+        <item>@font/kanit</item>
+        <item>@font/rocknroll_one</item>
     </array>
 </resources>

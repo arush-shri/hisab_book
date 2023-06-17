@@ -25,28 +25,35 @@ class DBHelper (context: Context) {
             val policy = ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
             connection = DriverManager.getConnection(url, username, password)
-            val query = connection.prepareStatement("SELECT * FROM temp")
-            val result = query.executeQuery()
-            while (result.next()) {
-                val namedValue = result.getString("named")
-            }
+//            val query = connection.prepareStatement("SELECT * FROM temp")
+//            val result = query.executeQuery()
+//            while (result.next()) {
+//                val namedValue = result.getString("named")
+//            }
 
-            // Use the connection to execute queries or perform other operations
         } catch (e: SQLException) {
             Log.d("SQLError", e.stackTraceToString())
         }
     }
 
-    fun getData() : String?
+    fun create_user(userId:String, userName: String, debt: Float)
     {
-        val query = connection.prepareStatement("SELECT * FROM temp")
-        val result = query.executeQuery()
-        var namedValue = "None"
-        while (result.next()) {
-            namedValue = result.getString("named")
-        }
-        return namedValue
+        val statement = connection.createStatement()
+        val query = "INSERT INTO users (user_id, user_name, debt) SELECT $userId, '$userName', $debt FROM dual WHERE NOT EXISTS (SELECT 1 FROM users WHERE user_id = $userId)"
+        statement.executeUpdate(query)
+        statement.close()
     }
+
+//    fun getData() : String?
+//    {
+//        val query = connection.prepareStatement("SELECT * FROM temp")
+//        val result = query.executeQuery()
+//        var namedValue = "None"
+//        while (result.next()) {
+//            namedValue = result.getString("named")
+//        }
+//        return namedValue
+//    }
 
     fun terminator()
     {

@@ -13,12 +13,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/nobg_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HisabBook"
+        android:theme="@style/Base.Theme.HisabBook"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/custom"/>
+            android:theme="@style/CustomTheme"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">

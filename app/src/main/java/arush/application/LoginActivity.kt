@@ -75,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
                     {
                         Toast.makeText(this@LoginActivity,"Welcome to Hisab Book",Toast.LENGTH_SHORT).show()
                         val i = Intent(this@LoginActivity, MainActivity::class.java)
+                        i.putExtra("user_id", edtPhone)
                         startActivity(i)
                         finish()
 
