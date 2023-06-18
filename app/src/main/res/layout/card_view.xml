@@ -38,7 +38,7 @@
                     android:hint="Tap to show history"
                     android:fontFamily="@font/chivo"
                     android:textSize="14sp"
-                    android:textColorHint="#"/>
+                    android:textColorHint="#9F9F9F"/>
             </LinearLayout>
 
             <TextView
