@@ -3,6 +3,7 @@ package arush.application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -74,9 +75,9 @@ class LoginActivity : AppCompatActivity() {
                     if(task.isSuccessful)
                     {
                         Toast.makeText(this@LoginActivity,"Welcome to Hisab Book",Toast.LENGTH_SHORT).show()
-                        val i = Intent(this@LoginActivity, MainActivity::class.java)
-                        i.putExtra("user_id", edtPhone)
-                        startActivity(i)
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.putExtra("user_id", edtPhone)
+                        startActivity(intent)
                         finish()
 
                     }

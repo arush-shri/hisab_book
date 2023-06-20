@@ -40,22 +40,45 @@ class DBHelper (context: Context) {
         statement.close()
     }
 
-    fun getData() : ArrayList<DataModel>
+    fun leniData(user_id:String) : ArrayList<DataModel>
     {
         val datalist = ArrayList<DataModel>()
         try
         {
             val statement = connection.createStatement()
-            val query = "SELECT * FROM owing_table"
+            val query = "SELECT * FROM owing_table WHERE user_id = $user_id"
+            val resultSet : ResultSet = statement.executeQuery(query)
+            while (resultSet.next())
+            {
+                val owes = resultSet.getString("owes")
+                val amount = resultSet.getFloat("amount")
+
+                val data = DataModel(owes, amount)
+                datalist.add(data)
+            }
+            resultSet.close()
+            statement.close()
+        }
+        catch (e:SQLException)
+        {
+            Log.d("SQLError", e.stackTraceToString())
+        }
+        return datalist
+    }
+    fun deniData(user_id:String) : ArrayList<DataModel>
+    {
+        val datalist = ArrayList<DataModel>()
+        try
+        {
+            val statement = connection.createStatement()
+            val query = "SELECT * FROM owing_table WHERE owes = $user_id"
             val resultSet : ResultSet = statement.executeQuery(query)
             while (resultSet.next())
             {
                 val userId = resultSet.getString("user_id")
-                val owes = resultSet.getString("owes")
-                val amount = resultSet.getFloat("amount")
                 val amnt = resultSet.getFloat("amnt")
 
-                val data = DataModel(userId, owes, amount, amnt)
+                val data = DataModel(userId, amnt)
                 datalist.add(data)
             }
             resultSet.close()
