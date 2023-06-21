@@ -1,7 +1,9 @@
 package arush.application
 
+import AccountCreator
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import arush.application.databinding.ActivityMainBinding
@@ -13,6 +15,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainBinding: ActivityMainBinding
     private lateinit var dbHelper : DBHelper
     val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var phoneNum: String
+    lateinit var ac: AccountCreator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,23 +27,49 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         dbHelper = DBHelper(applicationContext)
+
         var userId = intent.getStringExtra("user_id")
         if (userId != null) {
-            dbHelper.create_user(userId, "arush", 0.0f)
+            if (!userId.contains("+91")) {
+                userId = "+91$userId"
+            }
         }
+        var username = intent.getStringExtra("username")
+
+        if (userId != null && username != null) {
+            dbHelper.create_user(userId, username, 0.0f)
+        }
+
         val logout: ImageView = mainBinding.customAppBar.logoutButton
         logout.setOnClickListener {
             auth.signOut()
-            val intent = Intent(this@MainActivity,LoginActivity::class.java)
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
+
+        ac = AccountCreator(this)
+        userId = auth.currentUser?.phoneNumber
         mainBinding.place1Button.text = auth.currentUser?.phoneNumber
+        mainBinding.place2Button.setOnClickListener {
+            ac.getContact(this, object : AccountCreator.ContactSelectionListener {
+                override fun onContactSelected(phoneNumber: String) {
+                    this@MainActivity.phoneNum = phoneNumber
+                    if (userId != null) {
+                        dbHelper.accountOpener(userId, phoneNum)
+                    }
+                }
+            })
+        }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        ac.onActivityResult(requestCode, resultCode, data)
+        }
+
     override fun onDestroy() {
         super.onDestroy()
         dbHelper.terminator()
     }
-
-
 }

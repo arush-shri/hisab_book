@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private var edtPhone: String? = null
     private  var edtOTP: EditText? = null
     lateinit var loginBinding: ActivityLoginBinding
+    private var username : String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
@@ -31,8 +32,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
         loginBinding.getOTP.setOnClickListener {
             edtPhone = loginBinding.phoneNum.text.toString()
-            if(edtPhone.isNullOrEmpty()){
-                Toast.makeText(this@LoginActivity, "Please Enter you Number", Toast.LENGTH_SHORT).show()
+            username = loginBinding.usernameEdit.text.toString()
+            if(edtPhone.isNullOrEmpty() || username.isNullOrEmpty()){
+                Toast.makeText(this@LoginActivity, "Number or username empty", Toast.LENGTH_SHORT).show()
             }
             else
             {
@@ -40,8 +42,8 @@ class LoginActivity : AppCompatActivity() {
                 loginBinding.textInputLayout2.isVisible = true
                 loginBinding.Verifybutton.isVisible = true
                 loginBinding.getOTP.isVisible = false
-                loginBinding.textInputLayout.isEnabled = false
-                loginBinding.textInputLayout.isFocusable = false
+                loginBinding.textInputLayout.isVisible = false
+                loginBinding.textInputLayout3.isVisible = false
             }
         }
         loginBinding.Verifybutton.setOnClickListener {
@@ -77,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity,"Welcome to Hisab Book",Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.putExtra("user_id", edtPhone)
+                        intent.putExtra("username", username)
                         startActivity(intent)
                         finish()
 

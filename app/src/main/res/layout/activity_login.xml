@@ -32,13 +32,11 @@
             android:inputType="number"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/textInputLayout3"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:textColorHint="#03A9F4"
-        android:visibility="invisible"
         app:boxStrokeColor="#FFEC45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,6 +47,33 @@
         app:boxCornerRadiusBottomStart="40dp"
         app:boxCornerRadiusTopEnd="40dp"
         app:boxCornerRadiusTopStart="40dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/usernameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Username"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="#69E6A9" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="#03A9F4"
+        android:visibility="invisible"
+        app:boxCornerRadiusBottomEnd="40dp"
+        app:boxCornerRadiusBottomStart="40dp"
+        app:boxCornerRadiusTopEnd="40dp"
+        app:boxCornerRadiusTopStart="40dp"
+        app:boxStrokeColor="#FFEC45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.71000004">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/OTPedit"
@@ -72,7 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintVertical_bias="0.22000003" />
+        app:layout_constraintVertical_bias="0.68" />
 
     <TextView
         android:id="@+id/textView"
@@ -112,6 +137,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias="0.22000003" />
+        app:layout_constraintVertical_bias="0.23000002" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
