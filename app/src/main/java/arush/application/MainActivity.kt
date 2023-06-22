@@ -2,13 +2,12 @@ package arush.application
 
 import AccountCreator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import arush.application.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,8 +39,10 @@ class MainActivity : AppCompatActivity() {
             dbHelper.create_user(userId, username, 0.0f)
         }
 
-        val logout: ImageView = mainBinding.customAppBar.logoutButton
-        logout.setOnClickListener {
+        mainBinding.addContactButton.tooltipText = "Add contact"
+        mainBinding.customAppBar.logoutButton.tooltipText = "Log Out"
+
+        mainBinding.customAppBar.logoutButton.setOnClickListener {
             auth.signOut()
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
@@ -51,7 +52,8 @@ class MainActivity : AppCompatActivity() {
         ac = AccountCreator(this)
         userId = auth.currentUser?.phoneNumber
         mainBinding.place1Button.text = auth.currentUser?.phoneNumber
-        mainBinding.place2Button.setOnClickListener {
+
+        mainBinding.addContactButton.setOnClickListener {
             ac.getContact(this, object : AccountCreator.ContactSelectionListener {
                 override fun onContactSelected(phoneNumber: String) {
                     this@MainActivity.phoneNum = phoneNumber
