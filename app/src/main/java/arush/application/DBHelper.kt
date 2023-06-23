@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
-import arush.application.databinding.ActivityMainBinding
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet

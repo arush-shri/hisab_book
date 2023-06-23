@@ -4,7 +4,9 @@ import AccountCreator
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import arush.application.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var phoneNum: String
     lateinit var ac: AccountCreator
+    lateinit var dataList : ArrayList<DataModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,10 @@ class MainActivity : AppCompatActivity() {
             if (!userId.contains("+91")) {
                 userId = "+91$userId"
             }
+        }
+        else
+        {
+            userId = auth.currentUser?.phoneNumber.toString()
         }
         var username = intent.getStringExtra("username")
 
@@ -50,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         ac = AccountCreator(this)
-        userId = auth.currentUser?.phoneNumber
         mainBinding.place1Button.text = auth.currentUser?.phoneNumber
 
         mainBinding.addContactButton.setOnClickListener {
@@ -59,10 +65,23 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity.phoneNum = phoneNumber
                     if (userId != null) {
                         dbHelper.accountOpener(userId, phoneNum)
+                        dataList.add(0,DataModel(phoneNum,0.0f))
+                        mainBinding.recyclerView2.adapter?.notifyItemInserted(0)
                     }
                 }
             })
         }
+
+        mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
+        mainBinding.recyclerView2.setHasFixedSize(true)
+        dataList = dbHelper.leniData(userId)
+        mainBinding.recyclerView2.adapter = HomeAdapter(dataList, object : HomeAdapter.RecyclerViewItemClickListener {
+
+            override fun onItemClick(userId: String) {
+                Toast.makeText(this@MainActivity, userId, Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
