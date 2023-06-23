@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
+import java.lang.Exception
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -112,6 +113,16 @@ class DBHelper (context: Context) {
         return datalist
     }
 
+    fun insertData(amount: Float, userId: String)
+    {
+        try {
+            val statement = connection.createStatement()
+            val query = "UPDATE owing_table SET amount = '$amount' WHERE owes = '$userId'"
+            statement.executeUpdate(query)
+            statement.close()
+        }
+        catch (e: Exception){Log.d("Error", e.message.toString())}
+    }
     fun terminator()
     {
         connection.close()

@@ -12,7 +12,9 @@ class HomeAdapter(private val dataList : ArrayList<DataModel>, private val liste
 
 
     interface RecyclerViewItemClickListener {
-        fun onItemClick(userId: String)
+        fun onUserClick(userId: String, position: Int)
+        fun onAmountClick(userId: String, amount: Float, position: Int)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,8 +30,11 @@ class HomeAdapter(private val dataList : ArrayList<DataModel>, private val liste
         val currentItem = dataList[position]
         holder.username.text = currentItem.userId
         holder.amount.text = currentItem.amount.toString()
-        holder.itemView.setOnClickListener {
-            listener.onItemClick(currentItem.userId)
+        holder.username.setOnClickListener {
+            listener.onUserClick(currentItem.userId,position)
+        }
+        holder.amount.setOnClickListener {
+            listener.onAmountClick(currentItem.userId,currentItem.amount, position)
         }
     }
 
