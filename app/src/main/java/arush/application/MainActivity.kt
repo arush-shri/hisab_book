@@ -48,11 +48,16 @@ class MainActivity : AppCompatActivity() {
         {
             userId = userId.removeRange(0,1)
         }
-        var username = intent.getStringExtra("username")
 
+        if(dbHelper.checkExistence(userId))
+        {
+            val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        var username = intent.getStringExtra("username")
         if (username != null) {
             dbHelper.create_user(userId, username, 0.0f)
-
         }
 
         mainBinding.addContactButton.tooltipText = "Add contact"

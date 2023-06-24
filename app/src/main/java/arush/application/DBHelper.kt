@@ -33,6 +33,19 @@ class DBHelper (context: Context) {
         }
     }
 
+    fun checkExistence(userId: String) : Boolean
+    {
+        val statement = connection.createStatement()
+        val query = "SELECT 1 FROM users WHERE user_id = $userId"
+        val result = statement.executeQuery(query)
+        if(result.next())
+        {
+            statement.close()
+            return false
+        }
+        statement.close()
+        return true
+    }
     fun create_user(userId:String, userName: String, debt: Float)
     {
         val statement = connection.createStatement()
