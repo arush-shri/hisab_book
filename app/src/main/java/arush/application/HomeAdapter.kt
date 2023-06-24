@@ -1,5 +1,6 @@
 package arush.application
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ class HomeAdapter(private val dataList : ArrayList<DataModel>, private val liste
 
     interface RecyclerViewItemClickListener {
         fun onUserClick(userId: String, position: Int)
-        fun onAmountClick(userId: String, amount: Float, position: Int)
+        fun onAmountClick(oweUserId: String, amount: Float, position: Int)
 
     }
 
@@ -30,6 +31,14 @@ class HomeAdapter(private val dataList : ArrayList<DataModel>, private val liste
         val currentItem = dataList[position]
         holder.username.text = currentItem.userId
         holder.amount.text = currentItem.amount.toString()
+        if(currentItem.amount >=0 )
+        {
+            holder.amount.setTextColor(Color.GREEN)
+        }
+        else
+        {
+            holder.amount.setTextColor(Color.RED)
+        }
         holder.username.setOnClickListener {
             listener.onUserClick(currentItem.userId,position)
         }

@@ -38,19 +38,21 @@ class MainActivity : AppCompatActivity() {
         dbHelper = DBHelper(applicationContext)
 
         var userId = intent.getStringExtra("user_id")
-        if (userId != null) {
-            if (!userId.contains("+91")) {
-                userId = "+91$userId"
-            }
-        }
-        else
-        {
+        if (userId == null) {
             userId = auth.currentUser?.phoneNumber.toString()
+        }
+        if (!userId.contains("+91")) {
+            userId = "91$userId"
+        }
+        else if(userId.contains("+91"))
+        {
+            userId = userId.removeRange(0,1)
         }
         var username = intent.getStringExtra("username")
 
-        if (userId != null && username != null) {
+        if (username != null) {
             dbHelper.create_user(userId, username, 0.0f)
+
         }
 
         mainBinding.addContactButton.tooltipText = "Add contact"
@@ -76,6 +78,10 @@ class MainActivity : AppCompatActivity() {
                             dataList.add(0,DataModel(phoneNum,0.0f))
                             mainBinding.recyclerView2.adapter?.notifyItemInserted(0)
                         }
+                        else
+                        {
+                            Toast.makeText(applicationContext, "User does not exist on hisab book", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             })
@@ -84,28 +90,37 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView2.setHasFixedSize(true)
         dataList = dbHelper.leniData(userId)
+        dbHelper.deniData(userId, dataList)
+
         mainBinding.recyclerView2.adapter = HomeAdapter(dataList, object : HomeAdapter.RecyclerViewItemClickListener {
 
             override fun onUserClick(userId: String, position: Int) {
-
+                Toast.makeText(applicationContext, userId, Toast.LENGTH_SHORT).show()
             }
 
-            override fun onAmountClick(userId: String, amount: Float, position: Int) {
+            override fun onAmountClick(oweUserId: String, amount: Float, position: Int) {
 
                 val alert = AlertDialog.Builder(this@MainActivity,R.style.CustomAlertBack)
 
                 var customAmountView = layoutInflater.inflate(R.layout.custom_alert, null)
                 alert.setView(customAmountView)
                 val alertDialogCustom = alert.create()
-                customAmountView.findViewById<TextView>(R.id.setAmountButton).setOnClickListener {
+
+                customAmountView.findViewById<TextView>(R.id.takeAmountButton).setOnClickListener {
                     var amountSetText = customAmountView.findViewById<EditText>(R.id.setAmountText)
                     var amountSet = amountSetText.text.toString().toFloat()
-                    dbHelper.insertData(amountSet, userId)
-                    dataList[position].amount = amountSet
+                    dbHelper.insertData(amountSet, userId, dataList[position].userId, 1)
+                    dataList[position].amount = dataList[position].amount+amountSet
                     mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                     alertDialogCustom.dismiss()
                 }
-                customAmountView.findViewById<TextView>(R.id.cancelSetAmountButton).setOnClickListener {
+
+                customAmountView.findViewById<TextView>(R.id.giveAmountButton).setOnClickListener {
+                    var amountSetText = customAmountView.findViewById<EditText>(R.id.setAmountText)
+                    var amountSet = amountSetText.text.toString().toFloat()
+                    dbHelper.insertData(amountSet, userId, dataList[position].userId, 0)
+                    dataList[position].amount = dataList[position].amount-amountSet
+                    mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                     alertDialogCustom.dismiss()
                 }
                 alertDialogCustom.show()

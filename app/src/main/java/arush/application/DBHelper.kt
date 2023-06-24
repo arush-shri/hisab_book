@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
-import java.lang.Exception
+import android.widget.Toast
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -29,7 +29,7 @@ class DBHelper (context: Context) {
             connection = DriverManager.getConnection(url, username, password)
 
         } catch (e: SQLException) {
-            Log.d("SQLError", e.stackTraceToString())
+            Toast.makeText(context, "Couldn't connect to servers. Please try later ", Toast.LENGTH_SHORT ).show()
         }
     }
 
@@ -87,9 +87,8 @@ class DBHelper (context: Context) {
         }
         return datalist
     }
-    fun deniData(user_id:String) : ArrayList<DataModel>
+    fun deniData(user_id:String, dataList: ArrayList<DataModel>)
     {
-        val datalist = ArrayList<DataModel>()
         try
         {
             val statement = connection.createStatement()
@@ -101,7 +100,7 @@ class DBHelper (context: Context) {
                 val amnt = resultSet.getFloat("amnt")
 
                 val data = DataModel(userId, amnt)
-                datalist.add(data)
+                dataList.add(data)
             }
             resultSet.close()
             statement.close()
@@ -110,18 +109,48 @@ class DBHelper (context: Context) {
         {
             Log.d("SQLError", e.stackTraceToString())
         }
-        return datalist
     }
 
-    fun insertData(amount: Float, userId: String)
+    fun insertData(amount: Float, userId: String, oweId: String, commandId: Int)
     {
-        try {
-            val statement = connection.createStatement()
-            val query = "UPDATE owing_table SET amount = '$amount' WHERE owes = '$userId'"
-            statement.executeUpdate(query)
-            statement.close()
+        val statement = connection.createStatement()
+        var checkQuery = "SELECT * FROM owing_table WHERE (user_id = '$userId' AND owes = '$oweId')"
+        val executed = statement.executeQuery(checkQuery)
+        if(executed.next())
+        {
+            if(commandId == 1)
+            {
+                val preAmount = executed.getString("amount").toFloat()
+                val preAmnt = executed.getString("amnt").toFloat()
+                var query = "UPDATE owing_table SET amount = '${amount+preAmount}', amnt = ${preAmnt-amount} WHERE (user_id = '$userId' AND owes = '$oweId')"
+                statement.executeUpdate(query)
+            }
+            else
+            {
+                val preAmount = executed.getString("amount").toFloat()
+                val preAmnt = executed.getString("amnt").toFloat()
+                var query = "UPDATE owing_table SET amount = '${preAmount-amount}', amnt = ${preAmnt+amount} WHERE (user_id = '$userId' AND owes = '$oweId')"
+                statement.executeUpdate(query)
+            }
         }
-        catch (e: Exception){Log.d("Error", e.message.toString())}
+        else
+        {
+            if(commandId == 1)
+            {
+                val preAmount = executed.getString("amount").toFloat()
+                val preAmnt = executed.getString("amnt").toFloat()
+                var query = "UPDATE owing_table SET amount = '${preAmount-amount}', amnt = ${preAmnt+amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
+                statement.executeUpdate(query)
+            }
+            else
+            {
+                val preAmount = executed.getString("amount").toFloat()
+                val preAmnt = executed.getString("amnt").toFloat()
+                var query = "UPDATE owing_table SET amount = '${preAmount+amount}', amnt = ${preAmnt-amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
+                statement.executeUpdate(query)
+            }
+        }
+        statement.close()
     }
     fun terminator()
     {
