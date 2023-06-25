@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#971941"
+    android:background="#D13A3A"
     tools:context=".LoginActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -12,17 +12,17 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:textColorHint="#03A9F4"
+        app:boxCornerRadiusBottomEnd="40dp"
+        app:boxCornerRadiusBottomStart="40dp"
+        app:boxCornerRadiusTopEnd="40dp"
+        app:boxCornerRadiusTopStart="40dp"
         app:boxStrokeColor="#FFEC45"
         app:boxStrokeErrorColor="#FFEC45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.69"
-        app:boxCornerRadiusBottomEnd="40dp"
-        app:boxCornerRadiusBottomStart="40dp"
-        app:boxCornerRadiusTopEnd="40dp"
-        app:boxCornerRadiusTopStart="40dp">
+        app:layout_constraintVertical_bias="0.69">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneNum"
@@ -32,21 +32,22 @@
             android:inputType="number"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:textColorHint="#03A9F4"
+        app:boxCornerRadiusBottomEnd="40dp"
+        app:boxCornerRadiusBottomStart="40dp"
+        app:boxCornerRadiusTopEnd="40dp"
+        app:boxCornerRadiusTopStart="40dp"
         app:boxStrokeColor="#FFEC45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintVertical_bias="0.07999998"
-        app:boxCornerRadiusBottomEnd="40dp"
-        app:boxCornerRadiusBottomStart="40dp"
-        app:boxCornerRadiusTopEnd="40dp"
-        app:boxCornerRadiusTopStart="40dp">
+        app:layout_constraintVertical_bias="0.07999998">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/usernameEdit"
