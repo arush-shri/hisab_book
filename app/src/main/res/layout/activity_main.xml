@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/circle_template_color">
 
     <include
         android:id="@+id/customAppBar"
@@ -29,12 +30,12 @@
             android:background="@drawable/circle_template"
             android:fontFamily="@font/rocknroll_one"
             android:gravity="center"
-            android:shadowColor="#000000"
+            android:shadowColor="@color/black_and_white_color"
+            android:textColor="@color/black_and_white_color"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
             android:text="Place Holder"
-            android:textColor="#000000"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,12 +52,12 @@
             android:background="@drawable/circle_template"
             android:fontFamily="@font/rocknroll_one"
             android:gravity="center"
-            android:shadowColor="#000000"
+            android:shadowColor="@color/black_and_white_color"
+            android:textColor="@color/black_and_white_color"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
             android:text="Show History"
-            android:textColor="#000000"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,12 +74,12 @@
             android:background="@drawable/circle_template"
             android:fontFamily="@font/rocknroll_one"
             android:gravity="center"
-            android:shadowColor="#000000"
+            android:shadowColor="@color/black_and_white_color"
+            android:textColor="@color/black_and_white_color"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
             android:text="Place Holder"
-            android:textColor="#000000"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,6 +92,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+<!--        <androidx.appcompat.widget.SearchView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"/>-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView2"
             android:layout_width="match_parent"
@@ -115,6 +119,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.973"
+        app:shapeAppearance="circle"
         app:srcCompat="@drawable/baseline_add_24" />
     </FrameLayout>
 

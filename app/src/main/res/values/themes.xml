@@ -2,8 +2,16 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.HisabBook" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">#03A9F4</item>
-
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:actionBarSize">65dp</item>
     </style>
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <color name="circle_template_color">#FFFFFF</color>
+    <color name="circle_template_outer_color">#03A9F4</color>
+    <color name="black_and_white_color">#000000</color>
+    <color name="card_text_color">#F57C00</color>
+    <color name="actionBar_color">#03A9F4</color>
+
 </resources>

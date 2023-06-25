@@ -3,5 +3,17 @@
     <style name="Base.Theme.HisabBook" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">#03A9F4</item>
+        <item name="android:actionBarSize">65dp</item>
     </style>
+
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <color name="circle_template_color">#081B33</color>
+    <color name="circle_template_outer_color">#FFFFFF</color>
+    <color name="black_and_white_color">#FFFFFF</color>
+    <color name="actionBar_color">#081B33</color>
+
 </resources>
