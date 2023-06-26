@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity">
+    tools:context=".WelcomeActivity"
+    android:background="">
 
     <TextView
         android:id="@+id/textView4"
@@ -26,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
+        android:backgroundTint="@color/card_color"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/chivo"
                 android:text="user_name"
-                android:textColor="#000000"
+                android:textColor="@color/card_text_color"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="₹"
-                android:textColor="#000000"
+                android:textColor="@color/card_text_color"
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -95,7 +97,7 @@
                 android:fontFamily="@font/chivo"
                 android:singleLine="true"
                 android:text=" money"
-                android:textColor="#000000"
+                android:textColor="@color/card_text_color"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +189,7 @@
         app:layout_constraintHorizontal_bias="0.964"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:layout_constraintVertical_bias="0.205" />
+        app:layout_constraintVertical_bias="0.19" />
 
     <TextView
         android:id="@+id/textView14"
@@ -203,7 +205,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.313" />
+        app:layout_constraintVertical_bias="0.29000002" />
 
     <TextView
         android:id="@+id/textView12"

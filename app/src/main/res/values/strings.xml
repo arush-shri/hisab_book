@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Hisab Book</string>
+    <string name="login_welcome">Welcome to hisab book. \nEnter your phone number and a username to get started.</string>
+    <string name="login_number_hint">Enter Phone Number</string>
+    <string name="login_username_hint">Enter Username</string>
+    <string name="login_otp_hint">Enter OTP</string>
+    <string name="login_get_otp">Get OTP</string>
+    <string name="verify_text">Verify</string>
 </resources>

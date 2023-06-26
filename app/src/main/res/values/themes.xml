@@ -11,7 +11,14 @@
     <color name="circle_template_color">#FFFFFF</color>
     <color name="circle_template_outer_color">#03A9F4</color>
     <color name="black_and_white_color">#000000</color>
-    <color name="card_text_color">#F57C00</color>
+    <color name="card_text_color">#000000</color>
+    <color name="card_color">#FFFFFF</color>
     <color name="actionBar_color">#03A9F4</color>
+    <color name="float_back_color">#03A9F4</color>
+    <color name="hint_color">#707070</color>
+    <color name="welcome_back_color">#FFFFFF</color>
+
+    <color name="login_back_color">#D13A3A</color>
+    <color name="box_stroke_color">#FFEC45</color>
 
 </resources>
