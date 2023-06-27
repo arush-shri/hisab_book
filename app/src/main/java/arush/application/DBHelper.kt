@@ -6,6 +6,7 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.widget.Toast
+import java.lang.Exception
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -54,15 +55,16 @@ class DBHelper (context: Context) {
         statement.close()
     }
 
-    fun accountOpener(user_Id: String, oweId: String): Boolean {
+    fun accountOpener(userId: String, oweId: String): Boolean {
 
         val statement = connection.createStatement()
         val checkQuery = "SELECT * FROM users WHERE user_id = '$oweId'"
         val checkResult = statement.executeQuery(checkQuery)
-        val userId = user_Id.removeRange(0,1)
         if (checkResult.next()) {
             val check_Query = "SELECT * FROM owing_table WHERE (user_id = '$userId' AND owes = '$oweId') OR (user_id = '$oweId' AND owes = '$userId')"
             val check_Result = statement.executeQuery(check_Query)
+            try
+            {
             if(!check_Result.next())
             {
                 val insertQuery ="INSERT INTO owing_table (user_id, owes) VALUES ('$userId', '$oweId')"
@@ -70,6 +72,7 @@ class DBHelper (context: Context) {
                 statement.close()
                 return true
             }
+            }catch (e: Exception){Log.d("error create",e.message.toString()+userId)}
         }
         statement.close()
         return false

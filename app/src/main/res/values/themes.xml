@@ -7,6 +7,9 @@
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
         <item name="android:textSize">26sp</item>
     </style>
+    <style name="AppShapeAppearance.SmallComponent" parent="">
+        <item name="cornerSize">50%</item> <!-- Adjust the corner size to make it circular -->
+    </style>
 
     <color name="circle_template_color">#FFFFFF</color>
     <color name="circle_template_outer_color">#03A9F4</color>
