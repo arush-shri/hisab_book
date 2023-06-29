@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var phoneNum: String
     lateinit var ac: AccountCreator
     lateinit var dataList : ArrayList<DataModel>
+    private val historyHelper = HistoryHelper(this@MainActivity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
