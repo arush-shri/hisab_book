@@ -49,5 +49,7 @@ class HistoryHelper(private val cont: Context) {
     fun setHistory()
     {}
     fun getHistory(userId: String)
-    {}
+    {
+
+    }
 }
