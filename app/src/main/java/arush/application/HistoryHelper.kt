@@ -37,8 +37,13 @@ class HistoryHelper(private val cont: Context) {
         val orgData = gson.fromJson(jsonData, DataModel::class.java)
         return orgData
     }
-    fun accountFileCreator(userId: String)
-    {}
+    fun accountFileCreator(userId: String, data: String)
+    {
+        val file = File(subdir,"$userId.json")
+        val gson = Gson()
+        val jsonData = gson.toJson(data)
+        file.writeText(jsonData)
+    }
     fun fileOpener(fileName: String)
     {}
     fun setHistory()
