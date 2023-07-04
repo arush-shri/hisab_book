@@ -3,6 +3,7 @@ package arush.application
 import AccountCreator
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -115,7 +116,9 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.adapter = HomeAdapter(dataList, object : HomeAdapter.RecyclerViewItemClickListener {
 
             override fun onUserClick(userId: String, position: Int) {
-                Toast.makeText(applicationContext, userId, Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@MainActivity, HistoryActivity::class.java)
+                intent.putExtra("user_id", userId)
+                startActivity(intent)
             }
 
             override fun onAmountClick(oweUserId: String, amount: Float, position: Int) {
