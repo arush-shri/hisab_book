@@ -1,8 +1,12 @@
 package arush.application
 
 import android.content.Context
+import android.provider.ContactsContract.Data
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.json.JSONArray
 import java.io.File
+import java.lang.reflect.Type
 
 class HistoryHelper(private val cont: Context) {
 
@@ -17,7 +21,7 @@ class HistoryHelper(private val cont: Context) {
         }
     }
 
-    fun storeOffline(data: DataModel)
+    fun storeOffline(data: ArrayList<DataModel>)
     {
         val file = File(subdir, "OfflineData.json")
         if(!file.exists())
@@ -29,13 +33,13 @@ class HistoryHelper(private val cont: Context) {
         file.writeText(jsonData)
     }
 
-    fun retrieveOffline() : DataModel
+    fun retrieveOffline() : ArrayList<DataModel>
     {
         val file = File(subdir, "OfflineData.json")
         val jsonData = file.readText()
         val gson = Gson()
-        val orgData = gson.fromJson(jsonData, DataModel::class.java)
-        return orgData
+        val listType: Type = object : TypeToken<List<DataModel>>() {}.type
+        return gson.fromJson(jsonData, listType)
     }
     fun accountFileCreator(userId: String, data: String)
     {

@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var dataList : ArrayList<DataModel>
     private val historyHelper = HistoryHelper(this@MainActivity)
 
+    override fun onStart() {
+        super.onStart()
+        dataList = historyHelper.retrieveOffline()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -157,6 +161,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
+        historyHelper.storeOffline(dataList)
         dbHelper.terminator()
     }
 }
