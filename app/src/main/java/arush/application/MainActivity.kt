@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                 if(created){
                     dataList.add(0,DataModel(phoneNum,0.0f))
                     mainBinding.recyclerView2.adapter?.notifyItemInserted(0)
+                    historyHelper.accountFileCreator(phoneNum)
                 }
                 else
                 {

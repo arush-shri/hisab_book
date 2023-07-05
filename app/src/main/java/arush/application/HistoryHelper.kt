@@ -41,19 +41,27 @@ class HistoryHelper(private val cont: Context) {
         val listType: Type = object : TypeToken<List<DataModel>>() {}.type
         return gson.fromJson(jsonData, listType)
     }
-    fun accountFileCreator(userId: String, data: String)
+    fun accountFileCreator(userId: String)
     {
         val file = File(subdir,"$userId.json")
-        val gson = Gson()
-        val jsonData = gson.toJson(data)
-        file.writeText(jsonData)
+        if(!file.exists())
+        {
+            file.createNewFile()
+        }
     }
-    fun fileOpener(fileName: String)
-    {}
     fun setHistory()
     {}
-    fun getHistory(userId: String)
+    fun getHistory(userId: String) : ArrayList<String>
     {
-
+        val file = File(subdir, "$userId.json")
+        val gson = Gson()
+        val stringList = ArrayList<String>()
+        val fileLines = file.readLines()
+        for (line in fileLines) {
+            val jsonElement = gson.fromJson(line, com.google.gson.JsonElement::class.java)
+            val jsonString = gson.toJson(jsonElement)
+            stringList.add(jsonString)
+        }
+        return stringList
     }
 }
