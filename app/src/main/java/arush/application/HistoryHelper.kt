@@ -49,8 +49,16 @@ class HistoryHelper(private val cont: Context) {
             file.createNewFile()
         }
     }
-    fun setHistory()
-    {}
+    fun setHistory(userId: String, amount: String, status: Boolean)
+    {
+        val file = File(subdir, "$userId.json")
+        val gson = Gson()
+        var lineString = ""
+        if(status) { lineString = "gave $amount" }
+        else { lineString = "took $amount" }
+        val jsonLine = gson.toJson(lineString)
+        file.writeText(jsonLine)
+    }
     fun getHistory(userId: String) : ArrayList<String>
     {
         val file = File(subdir, "$userId.json")
