@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                     if(!amtSet.isEmpty()){
                         var amountSet = amtSet.toFloat()
                         dbHelper.insertData(amountSet, userId, dataList[position].userId, 1)
+                        historyHelper.setHistory(dataList[position].userId, amountSet.toString(), true)
                         dataList[position].amount = dataList[position].amount + amountSet
                         mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                         alertDialogCustom.dismiss()
@@ -151,6 +152,7 @@ class MainActivity : AppCompatActivity() {
                     if(!amtSet.isEmpty()){
                         var amountSet = amtSet.toFloat()
                         dbHelper.insertData(amtSet.toFloat(), userId, dataList[position].userId, 0)
+                        historyHelper.setHistory(dataList[position].userId, amountSet.toString(), true)
                         dataList[position].amount = dataList[position].amount - amountSet
                         mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                         alertDialogCustom.dismiss()
