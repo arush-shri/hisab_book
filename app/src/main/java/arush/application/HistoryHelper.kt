@@ -57,7 +57,7 @@ class HistoryHelper(private val cont: Context) {
         if(status) { lineString = "gave $amount" }
         else { lineString = "took $amount" }
         val jsonLine = gson.toJson(lineString)
-        file.writeText(jsonLine)
+        file.appendText(jsonLine)
     }
     fun getHistory(userId: String) : ArrayList<String>
     {
@@ -71,5 +71,11 @@ class HistoryHelper(private val cont: Context) {
             stringList.add(jsonString)
         }
         return stringList
+    }
+
+    fun deleteHistory(userId: String)
+    {
+        val file = File(subdir, "$userId.json")
+        file.writeText("")
     }
 }
