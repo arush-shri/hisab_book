@@ -20,12 +20,18 @@ class HistoryActivity : AppCompatActivity() {
         getHistory()
 
         historyBinding.deleteHistoryButton.setOnClickListener{
-            historyHelper.deleteHistory(userId)
+            historyHelper.deleteCompleteHistory(userId)
         }
     }
     private fun getHistory()
     {
         val historyArray = historyHelper.getHistory(userId)
+        historyBinding.historyRecyclerView.adapter = HistoryAdapter(userId,historyArray, object : HistoryAdapter.RecyclerViewItemClickListener
+        {
+            override fun onCardClick(position: Int) {
+                historyHelper.deleteHistory(position, userId)
+            }
 
+        })
     }
 }

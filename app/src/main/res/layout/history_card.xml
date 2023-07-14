@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/chivo"
-                android:text="user_name"
+                android:text="status"
                 android:textColor="@color/card_text_color"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,14 +62,14 @@
                 android:textColor="@color/card_text_color"
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/amountDisplayer"
+                app:layout_constraintEnd_toStartOf="@+id/historyAmountDisplayer"
                 app:layout_constraintHorizontal_bias="0.98"
                 app:layout_constraintStart_toEndOf="@+id/sentDisplayer"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
 
             <TextView
-                android:id="@+id/amountDisplayer"
+                android:id="@+id/historyAmountDisplayer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

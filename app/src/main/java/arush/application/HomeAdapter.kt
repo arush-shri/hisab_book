@@ -1,12 +1,10 @@
 package arush.application
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class HomeAdapter(private val dataList : ArrayList<DataModel>, private val listener: RecyclerViewItemClickListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){

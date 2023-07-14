@@ -7,6 +7,8 @@ import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
 import java.io.File
 import java.lang.reflect.Type
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HistoryHelper(private val cont: Context) {
 
@@ -53,29 +55,44 @@ class HistoryHelper(private val cont: Context) {
     {
         val file = File(subdir, "$userId.json")
         val gson = Gson()
-        var lineString = ""
-        if(status) { lineString = "gave $amount" }
-        else { lineString = "took $amount" }
-        val jsonLine = gson.toJson(lineString)
+        var lineString = if(status) {
+            "Sent"
+        } else {
+            "Received"
+        }
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")
+        val formatted = current.format(formatter)
+        val historyData = HistoryDataModel(lineString, amount, formatted)
+        val jsonLine = gson.toJson(historyData)
         file.appendText(jsonLine)
     }
-    fun getHistory(userId: String) : ArrayList<String>
+    fun getHistory(userId: String) : ArrayList<HistoryDataModel>
     {
         val file = File(subdir, "$userId.json")
         val gson = Gson()
-        val stringList = ArrayList<String>()
+        val historyList = ArrayList<HistoryDataModel>()
         val fileLines = file.readLines()
         for (line in fileLines) {
-            val jsonElement = gson.fromJson(line, com.google.gson.JsonElement::class.java)
-            val jsonString = gson.toJson(jsonElement)
-            stringList.add(jsonString)
+            val jsonElement = gson.fromJson(line, HistoryDataModel::class.java)
+            historyList.add(jsonElement)
         }
-        return stringList
+        return historyList
     }
 
-    fun deleteHistory(userId: String)
+    fun deleteCompleteHistory(userId: String)
     {
         val file = File(subdir, "$userId.json")
         file.writeText("")
+    }
+    fun deleteHistory(position: Int, userId: String)
+    {
+        val file = File(subdir, "$userId.json")
+        val fileLines = file.readLines()
+        val gson = Gson()
+        for (line in fileLines) {
+            val jsonElement = gson.fromJson(line, com.google.gson.JsonElement::class.java)
+            val jsonString = gson.toJson(jsonElement)
+        }
     }
 }
