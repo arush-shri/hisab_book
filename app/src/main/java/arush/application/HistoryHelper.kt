@@ -85,7 +85,7 @@ class HistoryHelper(private val cont: Context) {
         val file = File(subdir, "$userId.json")
         file.writeText("")
     }
-    fun deleteHistory(position: Int, userId: String)
+    fun deleteHistory(userId: String)
     {
         val file = File(subdir, "$userId.json")
         val fileLines = file.readLines()

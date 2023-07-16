@@ -9,12 +9,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
         android:backgroundTint="@color/card_color"
         app:cardUseCompatPadding="true"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        app:cardElevation="2dp">
+        android:layout_marginRight="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

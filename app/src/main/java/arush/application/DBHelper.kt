@@ -2,6 +2,8 @@ package arush.application
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
@@ -15,6 +17,7 @@ import java.sql.SQLException
 class DBHelper (context: Context) {
 
     private lateinit var connection: Connection
+    private val conte = context
     init {
         Class.forName("com.mysql.jdbc.Driver")
         val applicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
@@ -36,23 +39,30 @@ class DBHelper (context: Context) {
 
     fun checkExistence(userId: String) : Boolean
     {
-        val statement = connection.createStatement()
-        val query = "SELECT 1 FROM users WHERE user_id = $userId"
-        val result = statement.executeQuery(query)
-        if(result.next())
+        if(!checkConnection()){return false}
+        else
         {
+            val statement = connection.createStatement()
+            val query = "SELECT 1 FROM users WHERE user_id = $userId"
+            val result = statement.executeQuery(query)
+            if (result.next()) {
+                statement.close()
+                return false
+            }
             statement.close()
-            return false
+            return true
         }
-        statement.close()
-        return true
     }
     fun create_user(userId:String, userName: String, debt: Float)
     {
-        val statement = connection.createStatement()
-        val query = "INSERT INTO users (user_id, user_name, debt) SELECT $userId, '$userName', $debt FROM dual WHERE NOT EXISTS (SELECT 1 FROM users WHERE user_id = $userId)"
-        statement.executeUpdate(query)
-        statement.close()
+        if(checkConnection())
+        {
+            val statement = connection.createStatement()
+            val query =
+                "INSERT INTO users (user_id, user_name, debt) SELECT $userId, '$userName', $debt FROM dual WHERE NOT EXISTS (SELECT 1 FROM users WHERE user_id = $userId)"
+            statement.executeUpdate(query)
+            statement.close()
+        }
     }
 
     fun accountOpener(userId: String, oweId: String): Boolean {
@@ -171,5 +181,19 @@ class DBHelper (context: Context) {
     fun terminator()
     {
         connection.close()
+    }
+    private fun checkConnection() : Boolean
+    {
+        val connectManager = conte.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectManager.activeNetwork ?: return false
+        val activeNetwork = connectManager.getNetworkCapabilities(network)
+        if (activeNetwork != null) {
+            return when{
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        }
+        return false
     }
 }

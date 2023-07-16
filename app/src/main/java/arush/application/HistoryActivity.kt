@@ -29,7 +29,9 @@ class HistoryActivity : AppCompatActivity() {
         historyBinding.historyRecyclerView.adapter = HistoryAdapter(userId,historyArray, object : HistoryAdapter.RecyclerViewItemClickListener
         {
             override fun onCardClick(position: Int) {
-                historyHelper.deleteHistory(position, userId)
+                historyHelper.deleteHistory(userId)
+                historyArray.removeAt(position)
+                historyBinding.historyRecyclerView.adapter?.notifyItemRemoved(position)
             }
 
         })
