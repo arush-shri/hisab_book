@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class HomeAdapter(private val dataList : ArrayList<DataModel>, private val listener: RecyclerViewItemClickListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
+class HomeAdapter(private val dataList: ArrayList<DataModel>, private val listener: RecyclerViewItemClickListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
 
     interface RecyclerViewItemClickListener {
