@@ -81,9 +81,8 @@ class DBHelper (context: Context) {
         return false
     }
 
-    fun leniData(user_id:String) : ArrayList<DataModel>
+    fun leniData(user_id:String, datalist:ArrayList<DataModel>) : ArrayList<DataModel>
     {
-        val datalist = ArrayList<DataModel>()
         try
         {
             val statement = connection.createStatement()

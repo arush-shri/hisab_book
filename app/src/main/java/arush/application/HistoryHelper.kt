@@ -35,13 +35,16 @@ class HistoryHelper(private val cont: Context) {
         file.writeText(jsonData)
     }
 
-    fun retrieveOffline() : ArrayList<DataModel>
+    fun retrieveOffline() : ArrayList<DataModel>?
     {
         val file = File(subdir, "OfflineData.json")
-        val jsonData = file.readText()
-        val gson = Gson()
-        val listType: Type = object : TypeToken<List<DataModel>>() {}.type
-        return gson.fromJson(jsonData, listType)
+        if(!file.exists()) {
+            val jsonData = file.readText()
+            val gson = Gson()
+            val listType: Type = object : TypeToken<List<DataModel>>() {}.type
+            return gson.fromJson(jsonData, listType)
+        }
+        return null
     }
     fun accountFileCreator(userId: String)
     {

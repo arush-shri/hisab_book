@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-
 import android.os.Bundle
-import android.os.Parcelable
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -21,17 +19,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
     private lateinit var dbHelper : DBHelper
-    val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    private val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var phoneNum: String
     lateinit var ac: AccountCreator
-    lateinit var dataList : ArrayList<DataModel>
     private val historyHelper = HistoryHelper(this@MainActivity)
-    private val connection = checkConnection()
+    private lateinit var dataList : ArrayList<DataModel>
 
-    override fun onStart() {
-        super.onStart()
-        dataList = historyHelper.retrieveOffline()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         val view = mainBinding.root
         setContentView(view)
-
-        dbHelper = DBHelper(applicationContext)
 
         var userId = intent.getStringExtra("user_id")
         if (userId == null) {
@@ -54,14 +45,14 @@ class MainActivity : AppCompatActivity() {
             userId = userId.removeRange(0,1)
         }
 
-        if(dbHelper.checkExistence(userId))
+        if(checkConnection() && dbHelper.checkExistence(userId))
         {
             val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
             startActivity(intent)
         }
 
         var username = intent.getStringExtra("username")
-        if (username != null) {
+        if (checkConnection() && username != null) {
             dbHelper.createUser(userId, username, 0.0f)
         }
 
@@ -75,12 +66,15 @@ class MainActivity : AppCompatActivity() {
         ac = AccountCreator(this)
 
         mainBinding.addContactButton.setOnClickListener {
-            addContact(userId)
+            if(checkConnection()){ addContact(userId) }
+            else{Toast.makeText(this@MainActivity, "Please connect to the internet", Toast.LENGTH_SHORT).show()}
         }
 
         mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView2.setHasFixedSize(true)
-        dataList = dbHelper.leniData(userId)
+        var tempDataList = historyHelper.retrieveOffline()
+        if(tempDataList!=null){dataList=tempDataList}
+        dataList = dbHelper.leniData(userId, dataList)
         dbHelper.deniData(userId, dataList)
 
         adapterCreator(userId)
@@ -127,17 +121,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAmountClick(oweUserId: String, amount: Float, position: Int) {
-                if(connection){Toast.makeText(this@MainActivity, "Please connect to the internet", Toast.LENGTH_SHORT).show()}
+                if(!checkConnection()){Toast.makeText(this@MainActivity, "Please connect to the internet", Toast.LENGTH_SHORT).show()}
                 else
                 {
                     val alert = AlertDialog.Builder(this@MainActivity, R.style.CustomAlertBack)
                     var customAmountView = layoutInflater.inflate(R.layout.custom_alert, null)
                     alert.setView(customAmountView)
                     val alertDialogCustom = alert.create()
-                    customAmountView.findViewById<TextView>(R.id.takeAmountButton)
-                        .setOnClickListener {
-                            var amountSetText =
-                                customAmountView.findViewById<EditText>(R.id.setAmountText)
+                    customAmountView.findViewById<TextView>(R.id.takeAmountButton).setOnClickListener {
+                            var amountSetText = customAmountView.findViewById<EditText>(R.id.setAmountText)
                             var amtSet = amountSetText.text.toString()
                             if (!amtSet.isEmpty()) {
                                 var amountSet = amtSet.toFloat()
@@ -150,42 +142,25 @@ class MainActivity : AppCompatActivity() {
                                 dataList[position].amount = dataList[position].amount + amountSet
                                 mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                                 alertDialogCustom.dismiss()
-                            } else {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Please enter an amount",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            }
+                            else {
+                                Toast.makeText(applicationContext, "Please enter an amount", Toast.LENGTH_SHORT).show()
                             }
                         }
 
-                    customAmountView.findViewById<TextView>(R.id.giveAmountButton)
-                        .setOnClickListener {
-                            var amountSetText =
-                                customAmountView.findViewById<EditText>(R.id.setAmountText)
+                    customAmountView.findViewById<TextView>(R.id.giveAmountButton).setOnClickListener {
+                            var amountSetText = customAmountView.findViewById<EditText>(R.id.setAmountText)
                             var amtSet = amountSetText.text.toString()
                             if (!amtSet.isEmpty()) {
                                 var amountSet = amtSet.toFloat()
-                                dbHelper.insertData(
-                                    amtSet.toFloat(),
-                                    userId,
-                                    dataList[position].userId,
-                                    0
-                                )
-                                historyHelper.setHistory(
-                                    dataList[position].userId,
-                                    amountSet.toString(),
-                                    true
-                                )
+                                dbHelper.insertData(amtSet.toFloat(), userId, dataList[position].userId, 0)
+                                historyHelper.setHistory(dataList[position].userId, amountSet.toString(), true)
                                 dataList[position].amount = dataList[position].amount - amountSet
                                 mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                                 alertDialogCustom.dismiss()
-                            } else {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Please enter an amount",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            }
+                            else {
+                                Toast.makeText(applicationContext, "Please enter an amount", Toast.LENGTH_SHORT).show()
                             }
                         }
                     alertDialogCustom.show()
@@ -212,5 +187,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    private fun keepConnecting()
+    {
+        if(checkConnection())
+        {dbHelper = DBHelper(applicationContext)}
+        else
+        {
+            val delay = 1000L
+            android.os.Handler().postDelayed({keepConnecting()},delay)
+        }
     }
 }
