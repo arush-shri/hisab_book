@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -22,12 +23,13 @@ class MainActivity : AppCompatActivity() {
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var phoneNum: String
     lateinit var ac: AccountCreator
-    private val historyHelper = HistoryHelper(this@MainActivity)
-    private lateinit var dataList : ArrayList<DataModel>
+    private lateinit var historyHelper : HistoryHelper
+    private var dataList = ArrayList<DataModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        historyHelper = HistoryHelper(applicationContext)
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         val view = mainBinding.root
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         {
             userId = userId.removeRange(0,1)
         }
+
+        keepConnecting()
 
         if(checkConnection() && dbHelper.checkExistence(userId))
         {
@@ -73,7 +77,9 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView2.setHasFixedSize(true)
         var tempDataList = historyHelper.retrieveOffline()
+
         if(tempDataList!=null){dataList=tempDataList}
+
         dataList = dbHelper.leniData(userId, dataList)
         dbHelper.deniData(userId, dataList)
 
@@ -168,11 +174,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        historyHelper.storeOffline(dataList)
-        if(checkConnection()){ dbHelper.terminator() }
-    }
 
     private fun checkConnection() : Boolean
     {
@@ -199,4 +200,12 @@ class MainActivity : AppCompatActivity() {
             android.os.Handler().postDelayed({keepConnecting()},delay)
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        historyHelper.storeOffline(dataList)
+
+        if(checkConnection()){ dbHelper.terminator() }
+        Log.d("mainError","MAIN1")
+    }
+
 }

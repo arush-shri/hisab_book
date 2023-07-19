@@ -2,6 +2,7 @@ package arush.application
 
 import android.content.Context
 import android.provider.ContactsContract.Data
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
@@ -13,12 +14,12 @@ import java.time.format.DateTimeFormatter
 class HistoryHelper(private val cont: Context) {
 
     private val context : Context = cont
-    private val subdir : File
+    private var subdir : File
     init {
         val dir = context.filesDir
+
         subdir = File(dir, "Hisab")
-        if(!subdir.exists())
-        {
+        if (!subdir.exists()) {
             subdir.mkdirs()
         }
     }
@@ -38,7 +39,7 @@ class HistoryHelper(private val cont: Context) {
     fun retrieveOffline() : ArrayList<DataModel>?
     {
         val file = File(subdir, "OfflineData.json")
-        if(!file.exists()) {
+        if (file.exists()) {
             val jsonData = file.readText()
             val gson = Gson()
             val listType: Type = object : TypeToken<List<DataModel>>() {}.type
