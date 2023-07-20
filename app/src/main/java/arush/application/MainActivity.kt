@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var ac: AccountCreator
     private lateinit var historyHelper : HistoryHelper
     private var dataList = ArrayList<DataModel>()
+    private lateinit var deletionId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             if(checkConnection()){ addContact(userId) }
             else{Toast.makeText(this@MainActivity, "Please connect to the internet", Toast.LENGTH_SHORT).show()}
         }
+        deletionId = userId
 
         mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView2.setHasFixedSize(true)
@@ -167,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                             if (!amtSet.isEmpty()) {
                                 var amountSet = amtSet.toFloat()
                                 dbHelper.insertData(amtSet.toFloat(), userId, dataList[position].userId, 0)
-                                historyHelper.setHistory(dataList[position].userId, amountSet.toString(), true)
+                                historyHelper.setHistory(dataList[position].userId, amountSet.toString(), false)
                                 dataList[position].amount = dataList[position].amount - amountSet
                                 mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
                                 alertDialogCustom.dismiss()
@@ -178,6 +180,10 @@ class MainActivity : AppCompatActivity() {
                         }
                     alertDialogCustom.show()
                 }
+            }
+
+            override fun onCardClick(userId: String, position: Int) {
+                deletionProcedure(userId,position)
             }
         })
     }
@@ -206,7 +212,24 @@ class MainActivity : AppCompatActivity() {
             val delay = 1000L
             android.os.Handler().postDelayed({keepConnecting()},delay)
         }
+    }
 
+    private fun deletionProcedure(userId: String, position: Int)
+    {
+        val alert = AlertDialog.Builder(this@MainActivity)
+        alert.setMessage("Do you want to delete this contact ?")
+        alert.setPositiveButton("Yes") { dialog, _ ->
+            historyHelper.deleteCompleteHistory(userId)
+            dataList.removeAt(position)
+            mainBinding.recyclerView2.adapter?.notifyItemRemoved(position)
+            if(checkConnection())
+            {dbHelper.deleter(deletionId, userId)}
+            dialog.dismiss()
+        }
+        alert.setNegativeButton("No"){dialog, _ ->
+            dialog.dismiss()
+        }
+        alert.create().show()
     }
     override fun onDestroy() {
         super.onDestroy()

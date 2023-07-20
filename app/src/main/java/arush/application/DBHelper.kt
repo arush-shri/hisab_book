@@ -85,7 +85,6 @@ class DBHelper (context: Context) {
     {
         try
         {
-            var tempDataList = ArrayList<DataModel>()
             val statement = connection.createStatement()
             val query = "SELECT * FROM owing_table WHERE user_id = $user_id"
             val resultSet : ResultSet = statement.executeQuery(query)
@@ -171,6 +170,13 @@ class DBHelper (context: Context) {
             }
         }
         statement.close()
+    }
+
+    fun deleter(userId: String, oweId: String)
+    {
+        val query = "DELETE FROM owing_table WHERE user_id = '$userId' AND owes = '$oweId'"
+        val statement = connection.createStatement()
+        statement.executeUpdate(query)
     }
     fun terminator()
     {
