@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
 import java.io.File
+import java.io.FileWriter
 import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -33,7 +34,11 @@ class HistoryHelper(private val cont: Context) {
         }
         val gson = Gson()
         val jsonData = gson.toJson(data)
+        val fileWriter = FileWriter(file, false)
+        fileWriter.write("")
         file.writeText(jsonData)
+        fileWriter.close()
+
     }
 
     fun retrieveOffline() : ArrayList<DataModel>?
@@ -70,18 +75,22 @@ class HistoryHelper(private val cont: Context) {
         val historyData = HistoryDataModel(lineString, amount, formatted)
         val jsonLine = gson.toJson(historyData)
         file.appendText(jsonLine)
+
     }
     fun getHistory(userId: String) : ArrayList<HistoryDataModel>
     {
         val file = File(subdir, "$userId.json")
         val gson = Gson()
         val historyList = ArrayList<HistoryDataModel>()
+
         if(file.exists())
         {
-            val fileLines = file.readLines()
-            for (line in fileLines) {
-                val jsonElement = gson.fromJson(line, HistoryDataModel::class.java)
-                historyList.add(jsonElement)
+            file.readLines().forEach {
+                val line = it.trim()
+                Log.d("historyIT", line)
+                val data = gson.fromJson(line, HistoryDataModel::class.java)
+                Log.d("historyJSON", data.toString())
+                historyList.add(data)
             }
         }
         return historyList

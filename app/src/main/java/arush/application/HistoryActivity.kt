@@ -14,6 +14,7 @@ class HistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         historyBinding = ActivityHistoryBinding.inflate(layoutInflater)
         val view = historyBinding.root
         setContentView(view)
@@ -30,7 +31,8 @@ class HistoryActivity : AppCompatActivity() {
     private fun getHistory()
     {
         val historyArray = historyHelper.getHistory(userId)
-        historyBinding.historyRecyclerView.adapter = HistoryAdapter(userId,historyArray, object : HistoryAdapter.RecyclerViewItemClickListener
+        Log.d("history", historyArray.toString())
+        historyBinding.historyRecyclerView.adapter = HistoryAdapter(historyArray, object : HistoryAdapter.RecyclerViewItemClickListener
         {
             override fun onCardClick(position: Int) {
                 historyHelper.deleteHistory(userId)

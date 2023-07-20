@@ -133,6 +133,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, HistoryActivity::class.java)
                 intent.putExtra("user_id", userId)
                 startActivity(intent)
+                Log.d("main", userId)
             }
 
             override fun onAmountClick(oweUserId: String, amount: Float, position: Int) {
