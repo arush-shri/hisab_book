@@ -49,14 +49,20 @@ class MainActivity : AppCompatActivity() {
 
         keepConnecting()
 
-        if(checkConnection() && dbHelper.checkExistence(userId))
+        if(checkConnection())
         {
-            val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
-            startActivity(intent)
+            if(dbHelper.checkExistence(userId))
+            {
+                Log.d("mainError", "HERE")
+                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         var username = intent.getStringExtra("username")
+
         if (checkConnection() && username != null) {
+
             dbHelper.createUser(userId, username, 0.0f)
         }
 
@@ -79,10 +85,12 @@ class MainActivity : AppCompatActivity() {
         var tempDataList = historyHelper.retrieveOffline()
 
         if(tempDataList!=null){dataList=tempDataList}
-
-        dataList = dbHelper.leniData(userId, dataList)
-        dbHelper.deniData(userId, dataList)
-
+        if(checkConnection())
+        {
+            dataList = dbHelper.leniData(userId, dataList)
+            dbHelper.deniData(userId, dataList)
+        }
+        Log.d("mainError",checkConnection().toString())
         adapterCreator(userId)
 
     }
@@ -199,6 +207,7 @@ class MainActivity : AppCompatActivity() {
             val delay = 1000L
             android.os.Handler().postDelayed({keepConnecting()},delay)
         }
+
     }
     override fun onDestroy() {
         super.onDestroy()

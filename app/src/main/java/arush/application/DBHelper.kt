@@ -85,16 +85,18 @@ class DBHelper (context: Context) {
     {
         try
         {
+            var tempDataList = ArrayList<DataModel>()
             val statement = connection.createStatement()
             val query = "SELECT * FROM owing_table WHERE user_id = $user_id"
             val resultSet : ResultSet = statement.executeQuery(query)
+            var i = 0
             while (resultSet.next())
             {
                 val owes = resultSet.getString("owes")
                 val amount = resultSet.getFloat("amount")
-
                 val data = DataModel(owes, amount)
-                datalist.add(data)
+                if(data !in datalist)
+                {datalist.add(data)}
             }
             resultSet.close()
             statement.close()
