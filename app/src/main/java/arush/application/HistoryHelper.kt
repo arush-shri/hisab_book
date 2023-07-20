@@ -76,10 +76,13 @@ class HistoryHelper(private val cont: Context) {
         val file = File(subdir, "$userId.json")
         val gson = Gson()
         val historyList = ArrayList<HistoryDataModel>()
-        val fileLines = file.readLines()
-        for (line in fileLines) {
-            val jsonElement = gson.fromJson(line, HistoryDataModel::class.java)
-            historyList.add(jsonElement)
+        if(file.exists())
+        {
+            val fileLines = file.readLines()
+            for (line in fileLines) {
+                val jsonElement = gson.fromJson(line, HistoryDataModel::class.java)
+                historyList.add(jsonElement)
+            }
         }
         return historyList
     }

@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
             dataList = dbHelper.leniData(userId, dataList)
             dbHelper.deniData(userId, dataList)
         }
-        Log.d("mainError",checkConnection().toString())
         adapterCreator(userId)
 
     }
@@ -212,9 +211,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         historyHelper.storeOffline(dataList)
-
         if(checkConnection()){ dbHelper.terminator() }
-        Log.d("mainError","MAIN1")
     }
 
 }

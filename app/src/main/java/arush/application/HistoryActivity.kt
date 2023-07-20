@@ -2,12 +2,13 @@ package arush.application
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import arush.application.databinding.ActivityHistoryBinding
 
 class HistoryActivity : AppCompatActivity() {
 
-    private val userId = intent.getStringExtra("user_id").toString()
-    private val historyHelper : HistoryHelper = HistoryHelper(this@HistoryActivity)
+    private lateinit var userId : String
+    private lateinit var historyHelper : HistoryHelper
     private lateinit var historyBinding: ActivityHistoryBinding
 
 
@@ -16,6 +17,9 @@ class HistoryActivity : AppCompatActivity() {
         historyBinding = ActivityHistoryBinding.inflate(layoutInflater)
         val view = historyBinding.root
         setContentView(view)
+
+        historyHelper  = HistoryHelper(applicationContext)
+        userId = intent.getStringExtra("user_id").toString()
 
         getHistory()
 
