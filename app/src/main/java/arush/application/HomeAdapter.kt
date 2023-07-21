@@ -14,7 +14,7 @@ class HomeAdapter(private val dataList: ArrayList<DataModel>, private val listen
     interface RecyclerViewItemClickListener {
         fun onUserClick(userId: String, position: Int)
         fun onAmountClick(oweUserId: String, amount: Float, position: Int)
-        fun onCardClick(userId: String, position: Int)
+        fun onCardClick(userId: String, currentItem : DataModel, position : Int)
 
     }
 
@@ -46,7 +46,7 @@ class HomeAdapter(private val dataList: ArrayList<DataModel>, private val listen
             listener.onAmountClick(currentItem.userId,currentItem.amount, position)
         }
         holder.card.setOnLongClickListener {
-            listener.onCardClick(currentItem.userId, position)
+            listener.onCardClick(currentItem.userId, currentItem, position)
             true
         }
     }

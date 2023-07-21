@@ -47,7 +47,7 @@ class HistoryHelper(private val cont: Context) {
         if (file.exists()) {
             val jsonData = file.readText()
             val gson = Gson()
-            val listType: Type = object : TypeToken<List<DataModel>>() {}.type
+            val listType: Type = object : TypeToken<ArrayList<DataModel>>() {}.type
             return gson.fromJson(jsonData, listType)
         }
         return null
@@ -74,7 +74,7 @@ class HistoryHelper(private val cont: Context) {
         val formatted = current.format(formatter)
         val historyData = HistoryDataModel(lineString, amount, formatted)
         val jsonLine = gson.toJson(historyData)
-        file.appendText(jsonLine)
+        file.appendText(jsonLine+"\n")
 
     }
     fun getHistory(userId: String) : ArrayList<HistoryDataModel>
@@ -85,14 +85,16 @@ class HistoryHelper(private val cont: Context) {
 
         if(file.exists())
         {
-            file.readLines().forEach {
-                val line = it.trim()
-                Log.d("historyIT", line)
-                val data = gson.fromJson(line, HistoryDataModel::class.java)
-                Log.d("historyJSON", data.toString())
+            val jsonData = file.readLines()
+            Log.d("historyIT", jsonData.toString())
+            for(lines in jsonData)
+            {
+                val data = gson.fromJson(lines, HistoryDataModel::class.java)
                 historyList.add(data)
             }
+
         }
+        Log.d("historyIT", historyList.toString())
         return historyList
     }
 

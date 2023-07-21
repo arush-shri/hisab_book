@@ -31,7 +31,7 @@ class HistoryActivity : AppCompatActivity() {
     private fun getHistory()
     {
         val historyArray = historyHelper.getHistory(userId)
-        Log.d("history", historyArray.toString())
+        Log.d("historyAct", historyArray.toString())
         historyBinding.historyRecyclerView.adapter = HistoryAdapter(historyArray, object : HistoryAdapter.RecyclerViewItemClickListener
         {
             override fun onCardClick(position: Int) {

@@ -183,8 +183,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onCardClick(userId: String, position: Int) {
-                deletionProcedure(userId,position)
+            override fun onCardClick(userId: String, currentItem : DataModel, position : Int) {
+                deletionProcedure(userId,currentItem, position)
             }
         })
     }
@@ -215,13 +215,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun deletionProcedure(userId: String, position: Int)
+    private fun deletionProcedure(userId: String, currentItem : DataModel, position : Int)
     {
         val alert = AlertDialog.Builder(this@MainActivity)
         alert.setMessage("Do you want to delete this contact ?")
         alert.setPositiveButton("Yes") { dialog, _ ->
             historyHelper.deleteCompleteHistory(userId)
-            dataList.removeAt(position)
+            dataList.remove(currentItem)
             mainBinding.recyclerView2.adapter?.notifyItemRemoved(position)
             if(checkConnection())
             {dbHelper.deleter(deletionId, userId)}
@@ -234,6 +234,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("remove", dataList.toString())
         historyHelper.storeOffline(dataList)
         if(checkConnection()){ dbHelper.terminator() }
     }
