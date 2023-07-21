@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity.phoneNum = phoneNumber
                 var created = dbHelper.accountOpener(userId, phoneNum)
                 if(created){
-                    dataList.add(0,DataModel(phoneNum,0.0f))
+                    dataList.add(0,DataModel(phoneNum,0.0f, "new"))
                     mainBinding.recyclerView2.adapter?.notifyItemInserted(0)
                     historyHelper.accountFileCreator(phoneNum)
                 }

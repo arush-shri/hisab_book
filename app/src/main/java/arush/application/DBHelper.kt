@@ -88,12 +88,19 @@ class DBHelper (context: Context) {
             val statement = connection.createStatement()
             val query = "SELECT * FROM owing_table WHERE user_id = $user_id"
             val resultSet : ResultSet = statement.executeQuery(query)
-            var i = 0
+
             while (resultSet.next())
             {
                 val owes = resultSet.getString("owes")
                 val amount = resultSet.getFloat("amount")
-                val data = DataModel(owes, amount)
+                val query2 = "SELECT * FROM users WHERE user_id = '$owes'"
+                Log.d("usernameSome", "here")
+                var usernameState = statement.executeQuery(query2)
+                Log.d("usernameSome", "here")
+                var username = ""
+                Log.d("usernameSome", usernameState.toString())
+                if(usernameState.next()){username = usernameState.getString("user_name")}
+                val data = DataModel(owes, amount, username)
                 if(data !in datalist)
                 {datalist.add(data)}
             }
@@ -117,8 +124,12 @@ class DBHelper (context: Context) {
             {
                 val userId = resultSet.getString("user_id")
                 val amnt = resultSet.getFloat("amnt")
-
-                val data = DataModel(userId, amnt)
+                val query2 = "SELECT * FROM users WHERE user_id = '$userId'"
+                var usernameState = statement.executeQuery(query2)
+                Log.d("usernameSome", usernameState.toString())
+                var username = ""
+                if(usernameState.next()){username = usernameState.getString("user_name")}
+                val data = DataModel(userId, amnt, username)
                 dataList.add(data)
             }
             resultSet.close()
@@ -134,7 +145,7 @@ class DBHelper (context: Context) {
     {
         val statement = connection.createStatement()
         var checkQuery = "SELECT * FROM owing_table WHERE (user_id = '$userId' AND owes = '$oweId')"
-        val executed = statement.executeQuery(checkQuery)
+        var executed = statement.executeQuery(checkQuery)
         if(executed.next())
         {
             if(commandId == 1)
@@ -154,19 +165,28 @@ class DBHelper (context: Context) {
         }
         else
         {
-            if(commandId == 1)
-            {
-                val preAmount = executed.getString("amount").toFloat()
-                val preAmnt = executed.getString("amnt").toFloat()
-                var query = "UPDATE owing_table SET amount = '${preAmount-amount}', amnt = ${preAmnt+amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
-                statement.executeUpdate(query)
-            }
-            else
-            {
-                val preAmount = executed.getString("amount").toFloat()
-                val preAmnt = executed.getString("amnt").toFloat()
-                var query = "UPDATE owing_table SET amount = '${preAmount+amount}', amnt = ${preAmnt-amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
-                statement.executeUpdate(query)
+            checkQuery = "SELECT * FROM owing_table WHERE (user_id = '$oweId' AND owes = '$userId')"
+            executed = statement.executeQuery(checkQuery)
+            if(executed.next()){
+                if (commandId == 1) {
+                    try {
+                        Log.d("DBhelper", "1")
+                        val preAmount = executed.getString("amount").toFloat()
+                        Log.d("DBhelper", "2")
+                        val preAmnt = executed.getString("amnt").toFloat()
+                        var query =
+                            "UPDATE owing_table SET amount = '${preAmount - amount}', amnt = ${preAmnt + amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
+                        statement.executeUpdate(query)
+                    } catch (e: Exception) {
+                        Log.d("DBhelper", e.message.toString())
+                    }
+                } else {
+                    val preAmount = executed.getString("amount").toFloat()
+                    val preAmnt = executed.getString("amnt").toFloat()
+                    var query =
+                        "UPDATE owing_table SET amount = '${preAmount + amount}', amnt = ${preAmnt - amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
+                    statement.executeUpdate(query)
+                }
             }
         }
         statement.close()
@@ -175,8 +195,11 @@ class DBHelper (context: Context) {
     fun deleter(userId: String, oweId: String)
     {
         val query = "DELETE FROM owing_table WHERE user_id = '$userId' AND owes = '$oweId'"
+        val query2 = "DELETE FROM owing_table WHERE user_id = '$oweId' AND owes = '$userId'"
         val statement = connection.createStatement()
         statement.executeUpdate(query)
+        statement.executeUpdate(query2)
+        statement.close()
     }
     fun terminator()
     {
