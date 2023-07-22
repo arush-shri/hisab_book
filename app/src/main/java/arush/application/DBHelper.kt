@@ -94,11 +94,8 @@ class DBHelper (context: Context) {
                 val owes = resultSet.getString("owes")
                 val amount = resultSet.getFloat("amount")
                 val query2 = "SELECT * FROM users WHERE user_id = '$owes'"
-                Log.d("usernameSome", "here")
                 var usernameState = statement.executeQuery(query2)
-                Log.d("usernameSome", "here")
                 var username = ""
-                Log.d("usernameSome", usernameState.toString())
                 if(usernameState.next()){username = usernameState.getString("user_name")}
                 val data = DataModel(owes, amount, username)
                 if(data !in datalist)
@@ -126,7 +123,6 @@ class DBHelper (context: Context) {
                 val amnt = resultSet.getFloat("amnt")
                 val query2 = "SELECT * FROM users WHERE user_id = '$userId'"
                 var usernameState = statement.executeQuery(query2)
-                Log.d("usernameSome", usernameState.toString())
                 var username = ""
                 if(usernameState.next()){username = usernameState.getString("user_name")}
                 val data = DataModel(userId, amnt, username)
@@ -200,6 +196,17 @@ class DBHelper (context: Context) {
         statement.executeUpdate(query)
         statement.executeUpdate(query2)
         statement.close()
+    }
+
+    fun getPhoneUser(phoneNum: String) : String
+    {
+        val statement = connection.createStatement()
+        val query2 = "SELECT * FROM users WHERE user_id = '$phoneNum'"
+        var usernameState = statement.executeQuery(query2)
+        var username = ""
+        if(usernameState.next()){username = usernameState.getString("user_name")}
+        statement.close()
+        return username
     }
     fun terminator()
     {

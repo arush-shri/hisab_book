@@ -85,11 +85,15 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.setHasFixedSize(true)
         var tempDataList = historyHelper.retrieveOffline()
         Log.d("remove", tempDataList.toString())
-        if(tempDataList!=null){dataList=tempDataList}
+
         if(checkConnection())
         {
             dataList = dbHelper.leniData(userId, dataList)
             dbHelper.deniData(userId, dataList)
+        }
+        else
+        {
+            if(tempDataList!=null){dataList=tempDataList}
         }
         adapterCreator(userId)
 
@@ -102,7 +106,8 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity.phoneNum = phoneNumber
                 var created = dbHelper.accountOpener(userId, phoneNum)
                 if(created){
-                    dataList.add(0,DataModel(phoneNum,0.0f, "new"))
+                    var userName = dbHelper.getPhoneUser(phoneNum)
+                    dataList.add(0,DataModel(phoneNum,0.0f, userName))
                     mainBinding.recyclerView2.adapter?.notifyItemInserted(0)
                     historyHelper.accountFileCreator(phoneNum)
                 }
