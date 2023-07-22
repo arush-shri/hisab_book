@@ -38,7 +38,6 @@ class HistoryHelper(private val cont: Context) {
         fileWriter.write("")
         file.writeText(jsonData)
         fileWriter.close()
-
     }
 
     fun retrieveOffline() : ArrayList<DataModel>?
@@ -70,7 +69,7 @@ class HistoryHelper(private val cont: Context) {
             "Received"
         }
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm a")
         val formatted = current.format(formatter)
         val historyData = HistoryDataModel(lineString, amount, formatted)
         val jsonLine = gson.toJson(historyData)
@@ -103,14 +102,15 @@ class HistoryHelper(private val cont: Context) {
         val file = File(subdir, "$userId.json")
         file.writeText("")
     }
-    fun deleteHistory(userId: String)
+    fun deleteHistory(currentItem: HistoryDataModel, userId: String)
     {
         val file = File(subdir, "$userId.json")
         val fileLines = file.readLines()
         val gson = Gson()
-        for (line in fileLines) {
-            val jsonElement = gson.fromJson(line, com.google.gson.JsonElement::class.java)
-            val jsonString = gson.toJson(jsonElement)
+        for(lines in fileLines)
+        {
+            val data = gson.fromJson(lines, HistoryDataModel::class.java)
+            if(data==currentItem){}
         }
     }
 }

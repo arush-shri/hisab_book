@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         {
             if(dbHelper.checkExistence(userId))
             {
-                Log.d("mainError", "HERE")
                 val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
                 startActivity(intent)
             }
@@ -85,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView2.setHasFixedSize(true)
         var tempDataList = historyHelper.retrieveOffline()
-
+        Log.d("remove", tempDataList.toString())
         if(tempDataList!=null){dataList=tempDataList}
         if(checkConnection())
         {
@@ -133,7 +132,6 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, HistoryActivity::class.java)
                 intent.putExtra("user_id", userId)
                 startActivity(intent)
-                Log.d("main", userId)
             }
 
             override fun onAmountClick(oweUserId: String, amount: Float, position: Int) {
