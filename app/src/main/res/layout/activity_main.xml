@@ -15,79 +15,68 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:layout_height="145dp"
+        android:backgroundTint="@color/card_color"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="10dp">
 
-        <TextView
-            android:id="@+id/place1Button"
-            android:layout_width="110dp"
-            android:layout_height="107dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/circle_template"
-            android:fontFamily="@font/rocknroll_one"
-            android:gravity="center"
-            android:shadowColor="@color/black_and_white_color"
-            android:textColor="@color/black_and_white_color"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:text="Place Holder"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.152" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/showHistoryButton"
-            android:layout_width="110dp"
-            android:layout_height="107dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/circle_template"
-            android:fontFamily="@font/rocknroll_one"
-            android:gravity="center"
-            android:shadowColor="@color/black_and_white_color"
-            android:textColor="@color/black_and_white_color"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:text="Show History"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.946"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.155" />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="51dp"
+                android:layout_height="49dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.153"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.19999999"
+                app:srcCompat="@drawable/baseline_history_24" />
 
-        <TextView
-            android:id="@+id/place2Button"
-            android:layout_width="110dp"
-            android:layout_height="107dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/circle_template"
-            android:fontFamily="@font/rocknroll_one"
-            android:gravity="center"
-            android:shadowColor="@color/black_and_white_color"
-            android:textColor="@color/black_and_white_color"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:text="Place Holder"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.153" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="44dp"
+                android:layout_height="45dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.231"
+                app:srcCompat="@drawable/baseline_currency_rupee_24" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="44dp"
+                android:layout_height="45dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.85"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.231"
+                app:srcCompat="@drawable/baseline_currency_rupee_24" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction\nHistory"
+                android:textAlignment="center"
+                android:textColor="@color/black_and_white_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.132"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
     <FrameLayout
         android:layout_width="match_parent"
