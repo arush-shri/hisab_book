@@ -12,7 +12,7 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var historyHelper : HistoryHelper
     private lateinit var historyBinding: ActivityHistoryBinding
     private var arraySize =  0
-
+    private lateinit var historyArray : ArrayList<HistoryDataModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,14 +28,14 @@ class HistoryActivity : AppCompatActivity() {
 
         historyBinding.deleteHistoryButton.setOnClickListener{
             historyHelper.deleteCompleteHistory(userId)
-            historyBinding.historyRecyclerView.adapter?.notifyItemRangeRemoved(0, arraySize-1)
+            historyArray.clear()
+            historyBinding.historyRecyclerView.adapter?.notifyItemRangeRemoved(0, arraySize)
         }
     }
     private fun getHistory()
     {
-        val historyArray = historyHelper.getHistory(userId)
+        historyArray = historyHelper.getHistory(userId)
         arraySize = historyArray.size
-        Log.d("historyAct", historyArray.toString())
         historyBinding.historyRecyclerView.adapter = HistoryAdapter(historyArray, object : HistoryAdapter.RecyclerViewItemClickListener
         {
             override fun onCardClick(currentItem: HistoryDataModel, position: Int) {
