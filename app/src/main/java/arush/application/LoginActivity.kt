@@ -3,7 +3,6 @@ package arush.application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -15,7 +14,6 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 

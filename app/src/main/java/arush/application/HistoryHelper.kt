@@ -1,11 +1,8 @@
 package arush.application
 
 import android.content.Context
-import android.provider.ContactsContract.Data
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.json.JSONArray
 import java.io.File
 import java.io.FileWriter
 import java.lang.reflect.Type
@@ -51,6 +48,43 @@ class HistoryHelper(private val cont: Context) {
         }
         return null
     }
+
+    fun setTransactionCount(count: Int)
+    {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yy")
+        val formatted = current.format(formatter)
+        val data = mapOf("Date" to formatted, "Count" to count)
+
+        val file = File(subdir, "transactionCount.json")
+        if (file.exists()) {
+            val gson = Gson()
+            val jsonData = gson.toJson(data)
+            val fileWriter = FileWriter(file, false)
+            file.writeText(jsonData)
+            fileWriter.close()
+        }
+        else{file.createNewFile()}
+    }
+    fun getTransactionCount() : Int
+    {
+        var totalCount = 0
+        val file = File(subdir, "transactionCount.json")
+        if (file.exists()) {
+            val gson = Gson()
+            val jsonData = file.readText()
+            val data = gson.fromJson(jsonData, Map::class.java)
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yy")
+            val formatted = current.format(formatter)
+
+            if(formatted == data["Date"])
+            {
+                totalCount = (data["Count"] as Double).toInt()
+            }
+        }
+        return totalCount
+    }
     fun accountFileCreator(userId: String)
     {
         val file = File(subdir,"$userId.json")
@@ -85,7 +119,6 @@ class HistoryHelper(private val cont: Context) {
         if(file.exists())
         {
             val jsonData = file.readLines()
-            Log.d("historyIT", jsonData.toString())
             for(lines in jsonData)
             {
                 val data = gson.fromJson(lines, HistoryDataModel::class.java)
@@ -93,7 +126,6 @@ class HistoryHelper(private val cont: Context) {
             }
 
         }
-        Log.d("historyIT", historyList.toString())
         return historyList
     }
 

@@ -1,7 +1,6 @@
 package arush.application
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,6 @@ class HomeAdapter(private val dataList: ArrayList<DataModel>, private val listen
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = dataList[position]
-        Log.d("username", currentItem.toString())
         holder.username.text = currentItem.username
         holder.amount.text = currentItem.amount.toString()
         if(currentItem.amount >=0 )

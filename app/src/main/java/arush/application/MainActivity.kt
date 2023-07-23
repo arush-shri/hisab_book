@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import arush.application.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,19 +23,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dbHelper : DBHelper
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var phoneNum: String
-    lateinit var ac: AccountCreator
+    lateinit var accountCreator: AccountCreator
     private lateinit var historyHelper : HistoryHelper
     private var dataList = ArrayList<DataModel>()
     private lateinit var deletionId : String
+    var transactionCount = 0
+    var debt = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         historyHelper = HistoryHelper(applicationContext)
+        transactionCount = historyHelper.getTransactionCount()
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         val view = mainBinding.root
         setContentView(view)
+
+        mainBinding.transactionCountDash.text = transactionCount.toString()
 
         var userId = intent.getStringExtra("user_id")
         if (userId == null) {
@@ -72,11 +78,22 @@ class MainActivity : AppCompatActivity() {
         mainBinding.customAppBar.logoutButton.setOnClickListener {
             signOut()
         }
+        mainBinding.transactionCountDash.setOnClickListener {
+            Toast.makeText(this@MainActivity, "$transactionCount transactions made today", Toast.LENGTH_SHORT).show()
+        }
+        mainBinding.debtShowDash.setOnClickListener {
+            Toast.makeText(this@MainActivity, "Your total debt is \u20B9$debt", Toast.LENGTH_SHORT).show()
+        }
+        mainBinding.showHistoryDash.setOnClickListener{
+            Toast.makeText(this@MainActivity, "This feature is under development. Please wait for next update :)", Toast.LENGTH_SHORT).show()
+        }
 
-        ac = AccountCreator(this)
+        accountCreator = AccountCreator(this)
 
         mainBinding.addContactButton.setOnClickListener {
-            if(checkConnection()){ addContact(userId) }
+            if(checkConnection()){
+                addContact(userId)
+            }
             else{Toast.makeText(this@MainActivity, "Please connect to the internet", Toast.LENGTH_SHORT).show()}
         }
         deletionId = userId
@@ -84,7 +101,6 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView2.setHasFixedSize(true)
         var tempDataList = historyHelper.retrieveOffline()
-        Log.d("remove", tempDataList.toString())
 
         if(checkConnection())
         {
@@ -95,13 +111,14 @@ class MainActivity : AppCompatActivity() {
         {
             if(tempDataList!=null){dataList=tempDataList}
         }
+        setDebt()
         adapterCreator(userId)
 
     }
 
     private fun addContact(userId: String)
     {
-        ac.getContact(this, object : AccountCreator.ContactSelectionListener {
+        accountCreator.getContact(this, object : AccountCreator.ContactSelectionListener {
             override fun onContactSelected(phoneNumber: String) {
                 this@MainActivity.phoneNum = phoneNumber
                 var created = dbHelper.accountOpener(userId, phoneNum)
@@ -127,7 +144,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        ac.onActivityResult(requestCode, resultCode, data)
+        accountCreator.onActivityResult(requestCode, resultCode, data)
         }
 
     private fun adapterCreator(userId: String)
@@ -160,6 +177,9 @@ class MainActivity : AppCompatActivity() {
                                 )
                                 dataList[position].amount = dataList[position].amount + amountSet
                                 mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
+                                transactionCount++
+                                mainBinding.transactionCountDash.text = transactionCount.toString()
+                                setDebt()
                                 alertDialogCustom.dismiss()
                             }
                             else {
@@ -176,6 +196,9 @@ class MainActivity : AppCompatActivity() {
                                 historyHelper.setHistory(dataList[position].userId, amountSet.toString(), false)
                                 dataList[position].amount = dataList[position].amount - amountSet
                                 mainBinding.recyclerView2.adapter?.notifyItemChanged(position)
+                                transactionCount++
+                                mainBinding.transactionCountDash.text = transactionCount.toString()
+                                setDebt()
                                 alertDialogCustom.dismiss()
                             }
                             else {
@@ -235,10 +258,38 @@ class MainActivity : AppCompatActivity() {
         }
         alert.create().show()
     }
+
+    private fun setDebt()
+    {
+        var tempDebt = 0.0
+        for(data in dataList)
+        {
+
+            if(data.amount<0){
+                tempDebt += data.amount
+
+            }
+            else{
+                tempDebt += data.amount
+            }
+        }
+        debt = tempDebt
+        if(tempDebt>0)
+        {mainBinding.debtTextDash.text = "No debt\nNice :)"}
+        else if(tempDebt<0)
+        {mainBinding.debtTextDash.text = "You have\nDebt :("}
+        else if(tempDebt==0.0)
+        {mainBinding.debtTextDash.text = "No debt\nNo Credit ;)"}
+        mainBinding.debtShowDash.text = (abs(debt)).toString()
+        Log.d("some", debt.toString())
+    }
+    override fun onStop() {
+        super.onStop()
+        historyHelper.storeOffline(dataList)
+        historyHelper.setTransactionCount(transactionCount)
+    }
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("remove", dataList.toString())
-        historyHelper.storeOffline(dataList)
         if(checkConnection()){ dbHelper.terminator() }
     }
 

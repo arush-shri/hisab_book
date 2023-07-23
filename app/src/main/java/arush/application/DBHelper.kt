@@ -2,21 +2,20 @@ package arush.application
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.widget.Toast
-import java.lang.Exception
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.SQLException
+import kotlin.Exception
 
 class DBHelper (context: Context) {
 
     private lateinit var connection: Connection
+    private val thisContext = context
     init {
         Class.forName("com.mysql.jdbc.Driver")
         val applicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
@@ -59,23 +58,26 @@ class DBHelper (context: Context) {
     }
 
     fun accountOpener(userId: String, oweId: String): Boolean {
-
         val statement = connection.createStatement()
         val checkQuery = "SELECT * FROM users WHERE user_id = '$oweId'"
         val checkResult = statement.executeQuery(checkQuery)
+
         if (checkResult.next()) {
             val check_Query = "SELECT * FROM owing_table WHERE (user_id = '$userId' AND owes = '$oweId') OR (user_id = '$oweId' AND owes = '$userId')"
             val check_Result = statement.executeQuery(check_Query)
             try
             {
-            if(!check_Result.next())
+                if(!check_Result.next())
+                {
+                    val insertQuery ="INSERT INTO owing_table (user_id, owes) VALUES ('$userId', '$oweId')"
+                    statement.executeUpdate(insertQuery)
+                    statement.close()
+                    return true
+                }
+            }catch (e: Exception)
             {
-                val insertQuery ="INSERT INTO owing_table (user_id, owes) VALUES ('$userId', '$oweId')"
-                statement.executeUpdate(insertQuery)
-                statement.close()
-                return true
+                Toast.makeText(thisContext, "An error occurred. Please try again later ", Toast.LENGTH_SHORT ).show()
             }
-            }catch (e: Exception){Log.d("error create",e.message.toString()+userId)}
         }
         statement.close()
         return false
@@ -94,7 +96,8 @@ class DBHelper (context: Context) {
                 val owes = resultSet.getString("owes")
                 val amount = resultSet.getFloat("amount")
                 val query2 = "SELECT * FROM users WHERE user_id = '$owes'"
-                var usernameState = statement.executeQuery(query2)
+                val statement2 = connection.createStatement()
+                var usernameState = statement2.executeQuery(query2)
                 var username = ""
                 if(usernameState.next()){username = usernameState.getString("user_name")}
                 val data = DataModel(owes, amount, username)
@@ -104,9 +107,9 @@ class DBHelper (context: Context) {
             resultSet.close()
             statement.close()
         }
-        catch (e:SQLException)
+        catch (e:Exception)
         {
-            Log.d("SQLError", e.stackTraceToString())
+            Toast.makeText(thisContext, "An error occurred. Please try again later ", Toast.LENGTH_SHORT ).show()
         }
         return datalist
     }
@@ -133,7 +136,7 @@ class DBHelper (context: Context) {
         }
         catch (e:SQLException)
         {
-            Log.d("SQLError", e.stackTraceToString())
+            Toast.makeText(thisContext, "An error occurred. Please try again later ", Toast.LENGTH_SHORT ).show()
         }
     }
 
@@ -165,17 +168,12 @@ class DBHelper (context: Context) {
             executed = statement.executeQuery(checkQuery)
             if(executed.next()){
                 if (commandId == 1) {
-                    try {
-                        Log.d("DBhelper", "1")
-                        val preAmount = executed.getString("amount").toFloat()
-                        Log.d("DBhelper", "2")
-                        val preAmnt = executed.getString("amnt").toFloat()
-                        var query =
+                    val preAmount = executed.getString("amount").toFloat()
+                    val preAmnt = executed.getString("amnt").toFloat()
+                    var query =
                             "UPDATE owing_table SET amount = '${preAmount - amount}', amnt = ${preAmnt + amount} WHERE (user_id = '$oweId' AND owes = '$userId')"
-                        statement.executeUpdate(query)
-                    } catch (e: Exception) {
-                        Log.d("DBhelper", e.message.toString())
-                    }
+                    statement.executeUpdate(query)
+
                 } else {
                     val preAmount = executed.getString("amount").toFloat()
                     val preAmnt = executed.getString("amnt").toFloat()

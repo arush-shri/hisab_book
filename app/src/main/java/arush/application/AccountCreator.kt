@@ -40,7 +40,7 @@ class AccountCreator(private val activity: Activity)  {
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { Log.d("error", it) }
+            Log.d("error", e.message.toString())
         }
     }
 }

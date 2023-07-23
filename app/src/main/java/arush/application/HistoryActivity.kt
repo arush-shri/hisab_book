@@ -2,7 +2,6 @@ package arush.application
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import arush.application.databinding.ActivityHistoryBinding
 
