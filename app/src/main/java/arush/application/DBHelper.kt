@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
-import android.util.Log
 import android.widget.Toast
 import java.sql.Connection
 import java.sql.DriverManager

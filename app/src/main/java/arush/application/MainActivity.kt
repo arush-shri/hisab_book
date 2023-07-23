@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -102,14 +101,11 @@ class MainActivity : AppCompatActivity() {
         mainBinding.recyclerView2.setHasFixedSize(true)
         var tempDataList = historyHelper.retrieveOffline()
 
+        if(tempDataList!=null){dataList=tempDataList}
         if(checkConnection())
         {
             dataList = dbHelper.leniData(userId, dataList)
             dbHelper.deniData(userId, dataList)
-        }
-        else
-        {
-            if(tempDataList!=null){dataList=tempDataList}
         }
         setDebt()
         adapterCreator(userId)
@@ -120,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     {
         accountCreator.getContact(this, object : AccountCreator.ContactSelectionListener {
             override fun onContactSelected(phoneNumber: String) {
-                this@MainActivity.phoneNum = phoneNumber
+                this@MainActivity.phoneNum = phoneNumber.replace(" ","").replace("+","")
                 var created = dbHelper.accountOpener(userId, phoneNum)
                 if(created){
                     var userName = dbHelper.getPhoneUser(phoneNum)
@@ -281,7 +277,6 @@ class MainActivity : AppCompatActivity() {
         else if(tempDebt==0.0)
         {mainBinding.debtTextDash.text = "No debt\nNo Credit ;)"}
         mainBinding.debtShowDash.text = (abs(debt)).toString()
-        Log.d("some", debt.toString())
     }
     override fun onStop() {
         super.onStop()

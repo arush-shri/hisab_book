@@ -17,7 +17,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="155dp"
+        android:layout_height="160dp"
         android:backgroundTint="@color/card_color"
         app:cardUseCompatPadding="true"
         app:cardElevation="7dp">
@@ -53,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.48"
+                app:layout_constraintVertical_bias="0.475"
                 app:srcCompat="@drawable/baseline_currency_rupee_24" />
 
             <TextView
@@ -66,30 +66,30 @@
                 android:text="0"
                 android:textColor="@color/card_text_color"
                 android:textAlignment="center"
-                android:textSize="48sp"
+                android:textSize="47sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.91"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.485"
+                app:layout_constraintVertical_bias="0.475"
                 app:srcCompat="@drawable/baseline_currency_rupee_24" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/chivo"
                 android:text="Transaction\nHistory"
                 android:textAlignment="center"
                 android:textColor="@color/black_and_white_color"
-                android:fontFamily="@font/chivo"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintHorizontal_bias="0.11"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/showHistoryDash"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.95" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -119,7 +119,7 @@
                 app:layout_constraintHorizontal_bias="0.505"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.928"
+                app:layout_constraintVertical_bias="0.95"
                 android:textColor="@color/black_and_white_color"/>
 
             <TextView
@@ -133,10 +133,10 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.885"
+                app:layout_constraintHorizontal_bias="0.9"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.94" />
+                app:layout_constraintVertical_bias="0.98" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
