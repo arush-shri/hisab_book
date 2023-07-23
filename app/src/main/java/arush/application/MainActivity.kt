@@ -117,6 +117,9 @@ class MainActivity : AppCompatActivity() {
         accountCreator.getContact(this, object : AccountCreator.ContactSelectionListener {
             override fun onContactSelected(phoneNumber: String) {
                 this@MainActivity.phoneNum = phoneNumber.replace(" ","").replace("+","")
+                if (phoneNum.substring(0,2) != "91") {
+                    phoneNum = "91$phoneNum"
+                }
                 var created = dbHelper.accountOpener(userId, phoneNum)
                 if(created){
                     var userName = dbHelper.getPhoneUser(phoneNum)
